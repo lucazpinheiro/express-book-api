@@ -1,12 +1,7 @@
-## just a simple rest api build with express and mongodb/mongoose. 
+## just a simple rest api build with express and mongodb/mongoose.
 
-### needs to be done
+Use `npm start` to run the project or use `npm run dev` to run with hot reload with nodemon. 
 
-* 'patch' route isn't working, I will fixe it before proceed with the project.
-
-### to do
-
-* add project to a docker container
-
-* deploy on heroku or another host service.
- 
+Don't forget to create a `.env` file on the project root and add 
+`DATABASE_URL=mongodb:<your mongodb url>` 
+to connect to your database.
