@@ -52,13 +52,14 @@ router.post('/', async (req, res) => {
 
 // updating by id
 router.patch('/:id', getBook, async (req, res) => {
-  if (req.book.title != null) res.book.title = req.book.title;
-  if (req.book.author != null)res.book.author = req.book.author;
-  if (req.book.publicationDate != null) {
+  console.log(req.body);
+  if (req.body.title != null) res.book.title = req.body.title;
+  if (req.body.author != null)res.book.author = req.body.author;
+  if (req.body.publicationDate != null) {
     // eslint-disable-next-line max-len
-    if (req.book.publicationDate.year != null) res.book.publicationDate.year = req.book.publicationDate.year;
+    if (req.body.publicationDate.year != null) res.book.publicationDate.year = req.body.publicationDate.year;
     // eslint-disable-next-line max-len
-    if (req.book.publicationDate.month != null) res.book.publicationDate.month = req.book.publicationDate.month;
+    if (req.body.publicationDate.month != null) res.book.publicationDate.month = req.body.publicationDate.month;
   }
   try {
     const updateBook = await res.book.save();
@@ -66,6 +67,7 @@ router.patch('/:id', getBook, async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
+  // res.status(200).json({ message: 'estamos vendo isso ai' });
 });
 
 // deleting by id
