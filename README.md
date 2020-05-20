@@ -1,4 +1,4 @@
-## just a simple rest api build with express and mongodb/mongoose.
+## just a simple Rest Api build with express and mongodb/mongoose.
 
 Use `npm start` to run the project or use `npm run dev` to run with hot reload with nodemon. 
 
