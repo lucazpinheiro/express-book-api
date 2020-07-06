@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import express from 'express';
 import cors from 'cors';
 import bookRouter from './routes/index';
