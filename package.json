@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpileOnly src/index.ts"
+    "dev": "ts-node-dev --respawn --transpileOnly src/index.ts",
+    "devx": "tsnd --poll --respawn --transpileOnly src/index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -22,7 +23,7 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "nodemon": "^2.0.4",
-    "ts-node-dev": "^1.0.0-pre.56",
+    "ts-node-dev": "^1.0.0-pre.49",
     "typescript": "^3.9.7"
   }
 }

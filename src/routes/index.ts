@@ -20,7 +20,7 @@ interface BooksList {
 
 const router = Router();
 
-//
+// get all
 router.get('/', async (req: Request, res: Response) => {
   try {
     const books: BooksList = await find();
