@@ -1,21 +1,9 @@
-interface IBookPublicationDate {
-  year: number,
-  month?: number,
-}
+import {
+  IBooksList,
+  IBook
+} from '../interfaces';
 
-interface IBookInterface {
-  title: string,
-  author: string,
-  country?: string,
-  language?: string,
-  publicationDate: IBookPublicationDate,
-}
-
-interface IBooksList {
-  [index: number]: IBookInterface,
-}
-
-const bookList: IBookInterface[] = [
+const bookList: IBook[] = [
   {
     title: 'The catcher in the Rye',
     author: 'J. D. Salinger',
@@ -37,14 +25,19 @@ const bookList: IBookInterface[] = [
 ];
 
 export function findAll(): IBooksList {
-  return bookList;
+  return [...bookList];
 }
 
-export function findByID(id: number): IBookInterface {
+export function findByID(id: number): IBook {
   return bookList[id];
 }
 
-export function createBook(bookObj: IBookInterface): IBookInterface {
+export function updateByID(id: number, bookObj: IBook): IBook {
+  bookList[id] = bookObj;
+  return bookList[id];
+}
+
+export function createBook(bookObj: IBook): IBook {
   bookList.push(bookObj);
   return bookObj;
 }

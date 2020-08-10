@@ -4,24 +4,17 @@ import {
   Response,
   NextFunction,
 } from 'express';
-import { findAll, findByID, createBook, } from '../model/index';
-
-interface BookPublicationDate {
-  year: number,
-  month?: number,
-}
-
-interface Book {
-  title: string,
-  author: string,
-  country?: string,
-  language?: string,
-  publicationDate: BookPublicationDate,
-}
-
-interface BooksList {
-  [index: number]: Book,
-}
+import {
+  findAll,
+  findByID,
+  createBook,
+  updateByID,
+} from '../model/index';
+import {
+  IBookPublicationDate,
+  IBooksList,
+  IBook,
+} from '../interfaces';
 
 const router = Router();
 
@@ -44,7 +37,7 @@ async function getBook(req: Request, res: Response, next: NextFunction) {
 // getting all
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const books: BooksList = findAll();
+    const books: IBooksList = findAll();
     res.json(books);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -67,7 +60,7 @@ router.post('/', async (req: Request, res: Response) => {
   //   author: req.body.author,
   //   publicationDate: req.body.publicationDate,
   // });
-  const book: Book = {
+  const book: IBook = {
     title: req.body.title,
     author: req.body.author,
     publicationDate: req.body.publicationDate,
@@ -81,10 +74,28 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// router.patch('/:bookid', getBook, async (req, res) => {
-//   console.log(`update book by id: ${req.params.id}`);
-//   console.log('updated book data: ', res.book);
-// });
+router.patch('/:bookid', getBook, async (req, res) => {
+  console.log(`update book by id: ${req.params.bookid}`);
+  console.log('updated book data: ', res.book);
+
+  if (req.body.title != null) res.book.title = req.body.title;
+  if (req.body.author != null) res.book.author = req.body.author;
+  if (req.body.publicationDate != null) {
+    if (req.body.publicationDate.year != null) {
+      res.book.publicationDate.year = req.body.publicationDate.year;
+    }
+    if (req.body.publicationDate.month != null) {
+      res.book.publicationDate.month = req.body.publicationDate.month;
+    }
+  }
+  try {
+    // const updateBook = await res.book.save();
+    const updateBook = updateByID(number(req.params.bookid), res.book);
+    res.json(updateBook);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
 // deleting by id
 router.delete('/:id', getBook, async (req: Request, res: Response) => {
