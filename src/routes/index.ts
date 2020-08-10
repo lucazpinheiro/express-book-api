@@ -1,5 +1,10 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { find } from '../model/index';
+import {
+  Router,
+  Request,
+  Response,
+  NextFunction,
+} from 'express';
+import { findAll, findByID, createBook, } from '../model/index';
 
 interface BookPublicationDate {
   year: number,
@@ -9,7 +14,7 @@ interface BookPublicationDate {
 interface Book {
   title: string,
   author: string,
-  country: string,
+  country?: string,
   language?: string,
   publicationDate: BookPublicationDate,
 }
@@ -21,25 +26,25 @@ interface BooksList {
 const router = Router();
 
 async function getBook(req: Request, res: Response, next: NextFunction) {
-  // let book;
-  // try {
-  //   book = await Books.findById(req.params.id);
-  //   if (book == null) {
-  //     return res.status(404).json({ message: 'Cannot find book' });
-  //   }
-  // } catch (err) {
-  //   return res.status(500).json({ message: err.message });
-  // }
+  let book;
+  try {
+    book = findByID(Number(req.params.bookid));
+    // book = await Books.findById(req.params.id);
+    if (book == null) {
+      return res.status(404).json({ message: 'Cannot find book' });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 
-  // res.book = book;
-  // next();
+  res.book = book;
+  next();
 }
-
 
 // getting all
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const books: BooksList = await find();
+    const books: BooksList = findAll();
     res.json(books);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -47,11 +52,11 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // gettting by id
-// router.get('/:bookid', getBook, async (req: Request, res: Response) => {
-//   console.log(`get book by id: ${req.params.id}`);
-//   console.log('book data: ', res.book);
-//   res.send(res.book);
-// });
+router.get('/:bookid', getBook, async (req: Request, res: Response) => {
+  console.log(`get book by id: ${req.params.bookid}`);
+  console.log('book data: ', res.book);
+  res.send(res.book);
+});
 
 // creating new register
 router.post('/', async (req: Request, res: Response) => {
@@ -62,12 +67,18 @@ router.post('/', async (req: Request, res: Response) => {
   //   author: req.body.author,
   //   publicationDate: req.body.publicationDate,
   // });
-  // try {
-  //   const newBook = await book.save();
-  //   res.status(201).json(newBook);
-  // } catch (err) {
-  //   res.status(400).json({ message: err.message });
-  // }
+  const book: Book = {
+    title: req.body.title,
+    author: req.body.author,
+    publicationDate: req.body.publicationDate,
+  };
+  try {
+    // const newBook = await book.save();
+    const newBook = createBook(book);
+    res.status(201).json(newBook);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 // router.patch('/:bookid', getBook, async (req, res) => {
