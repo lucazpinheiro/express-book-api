@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   Router,
   Request,
@@ -11,7 +12,6 @@ import {
   updateByID,
 } from '../model/index';
 import {
-  IBookPublicationDate,
   IBooksList,
   IBook,
 } from '../interfaces';
@@ -76,7 +76,6 @@ router.post('/', async (req: Request, res: Response) => {
 
 router.patch('/:bookid', getBook, async (req, res) => {
   console.log(`update book by id: ${req.params.bookid}`);
-  console.log('updated book data: ', res.book);
 
   if (req.body.title != null) res.book.title = req.body.title;
   if (req.body.author != null) res.book.author = req.body.author;
