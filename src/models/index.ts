@@ -1,7 +1,7 @@
 import {
   IBooksList,
   IBook,
-} from '../interfaces';
+} from '../interfaces/book';
 
 const bookList: IBook[] = [
   {

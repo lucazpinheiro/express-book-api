@@ -5,24 +5,15 @@ import {
   Response,
   NextFunction,
 } from 'express';
-import {
-  findAll,
-  findByID,
-  createBook,
-  updateByID,
-} from '../model/index';
-import {
-  IBooksList,
-  IBook,
-} from '../interfaces';
+import BookModel from '../models/book';
+import logger from '../helpers/logger';
 
 const router = Router();
 
 async function getBook(req: Request, res: Response, next: NextFunction) {
   let book;
   try {
-    book = findByID(Number(req.params.bookid));
-    // book = await Books.findById(req.params.id);
+    book = await BookModel.findById(req.params.bookid);
     if (book == null) {
       return res.status(404).json({ message: 'Cannot find book' });
     }
@@ -37,7 +28,7 @@ async function getBook(req: Request, res: Response, next: NextFunction) {
 // getting all
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const books: IBooksList = findAll();
+    const books = await BookModel.find();
     res.json(books);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -51,29 +42,24 @@ router.get('/:bookid', getBook, async (req: Request, res: Response) => {
   res.send(res.book);
 });
 
-// creating new register
+// creating new book
 router.post('/', async (req: Request, res: Response) => {
   console.log('create new book');
   console.log('new book data: ', req.body);
-  // const book = new Books({
-  //   title: req.body.title,
-  //   author: req.body.author,
-  //   publicationDate: req.body.publicationDate,
-  // });
-  const book: IBook = {
+  const book = new BookModel({
     title: req.body.title,
     author: req.body.author,
     publicationDate: req.body.publicationDate,
-  };
+  });
   try {
-    // const newBook = await book.save();
-    const newBook = createBook(book);
+    const newBook = await book.save();
     res.status(201).json(newBook);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
+// updating by id
 router.patch('/:bookid', getBook, async (req, res) => {
   console.log(`update book by id: ${req.params.bookid}`);
 
@@ -88,8 +74,7 @@ router.patch('/:bookid', getBook, async (req, res) => {
     }
   }
   try {
-    // const updateBook = await res.book.save();
-    const updateBook = updateByID(number(req.params.bookid), res.book);
+    const updateBook = await res.book.save();
     res.json(updateBook);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -97,14 +82,14 @@ router.patch('/:bookid', getBook, async (req, res) => {
 });
 
 // deleting by id
-router.delete('/:id', getBook, async (req: Request, res: Response) => {
-  console.log(`delete book by id: ${req.params.id}`);
-  // try {
-  //   await res.book.remove();
-  //   res.json({ message: 'Deleted Book' });
-  // } catch (err) {
-  //   res.status(500).json({ message: err.message });
-  // }
+router.delete('/:bookid', getBook, async (req: Request, res: Response) => {
+  console.log(`delete book by id: ${req.params.bookid}`);
+  try {
+    await res.book.remove();
+    res.json({ message: 'Deleted Book' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 export default router;
