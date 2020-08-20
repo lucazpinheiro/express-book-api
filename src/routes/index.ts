@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   Router,
   Request,
@@ -37,15 +36,15 @@ router.get('/', async (req: Request, res: Response) => {
 
 // gettting by id
 router.get('/:bookid', getBook, async (req: Request, res: Response) => {
-  console.log(`get book by id: ${req.params.bookid}`);
-  console.log('book data: ', res.book);
+  logger(`get book by id: ${req.params.bookid}`);
+  logger('book data: ', res.book);
   res.send(res.book);
 });
 
 // creating new book
 router.post('/', async (req: Request, res: Response) => {
-  console.log('create new book');
-  console.log('new book data: ', req.body);
+  logger('create new book');
+  logger('new book data: ', req.body);
   const book = new BookModel({
     title: req.body.title,
     author: req.body.author,
@@ -60,8 +59,8 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // updating by id
-router.patch('/:bookid', getBook, async (req, res) => {
-  console.log(`update book by id: ${req.params.bookid}`);
+router.put('/:bookid', getBook, async (req, res) => {
+  logger(`update book by id: ${req.params.bookid}`);
 
   if (req.body.title != null) res.book.title = req.body.title;
   if (req.body.author != null) res.book.author = req.body.author;
@@ -83,7 +82,7 @@ router.patch('/:bookid', getBook, async (req, res) => {
 
 // deleting by id
 router.delete('/:bookid', getBook, async (req: Request, res: Response) => {
-  console.log(`delete book by id: ${req.params.bookid}`);
+  logger(`delete book by id: ${req.params.bookid}`);
   try {
     await res.book.remove();
     res.json({ message: 'Deleted Book' });
