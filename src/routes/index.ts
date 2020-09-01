@@ -3,7 +3,7 @@ import {
   Request,
   Response,
 } from 'express';
-import BookModel from '../models/book';
+import BookModel from '../models/index';
 import logger from '../helpers/logger';
 
 const router = Router();
@@ -50,7 +50,7 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:bookid', async (req, res) => {
   logger(`update book by id: ${req.params.bookid}`);
   try {
-    const updatedBook = await BookModel.findByIdAndUpdate(req.params.bookid, {...req.body});
+    const updatedBook = await BookModel.findByIdAndUpdate(req.params.bookid, { ...req.body });
     res.json(updatedBook);
   } catch (err) {
     res.status(400).json({ message: err.message });
