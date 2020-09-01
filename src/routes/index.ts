@@ -2,27 +2,11 @@ import {
   Router,
   Request,
   Response,
-  NextFunction,
 } from 'express';
 import BookModel from '../models/book';
 import logger from '../helpers/logger';
 
 const router = Router();
-
-async function getBook(req: Request, res: Response, next: NextFunction) {
-  let book;
-  try {
-    book = await BookModel.findById(req.params.bookid);
-    if (book == null) {
-      return res.status(404).json({ message: 'Cannot find book' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  res.book = book;
-  next();
-}
 
 // getting all
 router.get('/', async (req: Request, res: Response) => {
@@ -35,16 +19,20 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // gettting by id
-router.get('/:bookid', getBook, async (req: Request, res: Response) => {
+router.get('/:bookid', async (req: Request, res: Response) => {
   logger(`get book by id: ${req.params.bookid}`);
-  logger('book data: ', res.book);
-  res.send(res.book);
+  try {
+    const book = await BookModel.findById(req.params.bookid);
+    res.json(book);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // creating new book
 router.post('/', async (req: Request, res: Response) => {
   logger('create new book');
-  logger('new book data: ', req.body);
+  logger(req.body);
   const book = new BookModel({
     title: req.body.title,
     author: req.body.author,
@@ -59,32 +47,21 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // updating by id
-router.put('/:bookid', getBook, async (req, res) => {
+router.put('/:bookid', async (req, res) => {
   logger(`update book by id: ${req.params.bookid}`);
-
-  if (req.body.title != null) res.book.title = req.body.title;
-  if (req.body.author != null) res.book.author = req.body.author;
-  if (req.body.publicationDate != null) {
-    if (req.body.publicationDate.year != null) {
-      res.book.publicationDate.year = req.body.publicationDate.year;
-    }
-    if (req.body.publicationDate.month != null) {
-      res.book.publicationDate.month = req.body.publicationDate.month;
-    }
-  }
   try {
-    const updateBook = await res.book.save();
-    res.json(updateBook);
+    const updatedBook = await BookModel.findByIdAndUpdate(req.params.bookid, {...req.body});
+    res.json(updatedBook);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
 // deleting by id
-router.delete('/:bookid', getBook, async (req: Request, res: Response) => {
+router.delete('/:bookid', async (req: Request, res: Response) => {
   logger(`delete book by id: ${req.params.bookid}`);
   try {
-    await res.book.remove();
+    await BookModel.findByIdAndDelete(req.params.bookid);
     res.json({ message: 'Deleted Book' });
   } catch (err) {
     res.status(500).json({ message: err.message });

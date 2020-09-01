@@ -9,11 +9,11 @@ dotenv.config();
 
 const PORT = 5000;
 
-const dbCredentials = {
-  uri: process.env.DATABASE_URL,
+const DB_CREDENTIALS = {
+  uri: process.env.DATABASE_URL || 'mongodb://localhost/booksAPI',
 };
 
-mongoose.connect(dbCredentials.uri, { useNewUrlParser: true });
+mongoose.connect(DB_CREDENTIALS.uri, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', (err) => logger(err));
 db.once('open', () => logger('connected to databse'));
