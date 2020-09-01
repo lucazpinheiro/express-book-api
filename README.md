@@ -41,7 +41,7 @@ to connect to your database.
 
 Run the following script ```npm run dev```
 
-### ```Run with builded version```
+### ```Run build version```
 
 Run the following scripts ```npm run build``` and ```npm start```
 
