@@ -1,4 +1,4 @@
-## CRUD Rest API build with Typescript, Express, Mongoose, and Mongodb.
+## A simple REST API build with Typescript, Express, Mongoose, and Mongodb.
 
 This repo contains the code base for a simple REST API that implements crud methods for a Book object
 
