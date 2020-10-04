@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
-import router from './routes/index';
+import { bookRouter } from './routes/index';
 import logger from './helpers/logger';
 
 dotenv.config();
@@ -22,6 +22,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/books', router);
+app.use('/books', bookRouter);
 
 app.listen(PORT, () => logger(`server stared at http://localhost:${PORT}`));
