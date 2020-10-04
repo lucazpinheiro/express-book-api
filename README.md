@@ -9,7 +9,7 @@ This repo contains the code base for a simple REST API that implements crud meth
     "title": string and required,
     "author": string and required,
     "country": string and optional,
-    "language"?: string and optional,
+    "language": string and optional,
     "publicationDate": {
         "year": number and required,
         "month": number and optional
