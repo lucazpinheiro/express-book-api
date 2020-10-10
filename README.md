@@ -1,6 +1,6 @@
 ## A simple REST API build with Typescript, Express, Mongoose, and Mongodb.
 
-This repo contains the code base for a simple REST API that implements crud methods for a Book object
+The API implements CRUD routes for a `book` object. Wich can be accessed through the `/books` endpoint.
 
 ### Book data model
 
@@ -19,29 +19,31 @@ This repo contains the code base for a simple REST API that implements crud meth
 
 ### API endpoint
 
-The API has one endpoint with five possible HTTP methods
-
 ```
-GET books/
-GET books/bookid
-POST books/
-PUT books/bookid
-DELETE books/bookid
+GET /books
+GET /books/bookid
+POST /books
+PUT /books/bookid
+DELETE /books/bookid
 ```
+*Use the mongodb `_id` as the `/bookid` parameter*
 
 ## ```Hot to run```
 
-First, clone this repo and run ```npm install```
+### ```Initial setup```
 
-Second, create a ```.env``` file on the project's root and add the following line:
-```DATABASE_URL=mongodb:<your mongodb url>```
-to connect to your database.
+0. Clone this repo and run ```npm install```
 
-### ```Run in development mode```
+0. If you have mongodb installed locally just you don't need to do anything else. But, if want to use a remote database, create a ```.env``` file on the project's root and add the following line: ```DATABASE_URL=mongodb:<your mongodb url>``` to connect to your database.
 
-Run the following script ```npm run dev```
+### ```Running in development with hot reaload```
 
-### ```Run build version```
+Run ```npm run dev```
 
-Run the following scripts ```npm run build``` and ```npm start```
+### ```Generate a build```
 
+Run ```npm run build```
+
+### ```Build and run```
+
+Run ```npm start```
